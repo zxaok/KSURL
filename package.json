@@ -1,14 +1,10 @@
 {
-  "name": "video-link-extractor",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "dependencies": {
-    "axios": "^0.21.1",
-    "express": "^4.17.1",
-    "cheerio": "^1.0.0-rc.10",
-    "node-cache": "^5.1.2"
-  }
+  "version": 2,
+  "builds": [
+    { "src": "index.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.js" }
+  ]
 }
