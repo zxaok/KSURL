@@ -1,18 +1,10 @@
 {
-  "name": "ksurl",
+  "name": "video-fetcher",
   "version": "1.0.0",
+  "main": "index.js",
   "dependencies": {
-    "express": "^4.17.1",
     "axios": "^0.21.1",
-    "cheerio": "^1.0.0-rc.10"
-  },
-  "scripts": {
-    "start": "node index.js"
-  },
-  "builds": [
-    { "src": "index.js", "use": "@vercel/node" }
-  ],
-  "routes": [
-    { "src": "/", "dest": "/index.js" }
-  ]
+    "node-cache": "^5.1.2",
+    "express": "^4.17.1"
+  }
 }
