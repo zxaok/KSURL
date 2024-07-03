@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "node-cache": "^5.1.2",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "jsdom": "^16.4.0"
   }
 }
