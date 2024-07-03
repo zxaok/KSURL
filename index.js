@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const NodeCache = require('node-cache');
+const { JSDOM } = require('jsdom');
 
 const app = express();
 const cache = new NodeCache({ stdTTL: 108000 }); // 缓存 30 小时，108000 秒
@@ -15,8 +16,9 @@ async function fetchVideoUrl() {
       }
     });
 
-    const data = response.data;
-    const videoUrlMatch = data.match(/video\s*=\s*'([^']+)'/);
+    const dom = new JSDOM(response.data);
+    const scriptContent = dom.window.document.querySelector('script').textContent;
+    const videoUrlMatch = scriptContent.match(/video\s*:\s*'([^']+)'/);
 
     if (videoUrlMatch && videoUrlMatch[1]) {
       return videoUrlMatch[1];
@@ -24,7 +26,7 @@ async function fetchVideoUrl() {
       throw new Error('Video URL not found');
     }
   } catch (error) {
-    console.error('Error fetching video URL:', error);
+    console.error('Error fetching video URL:', error.message);
     throw error;
   }
 }
@@ -41,7 +43,7 @@ app.get('/', async (req, res) => {
     cache.set('videoUrl', videoUrl);
     res.send(`Fetched video URL: ${videoUrl}`);
   } catch (error) {
-    res.status(500).send('Error fetching video URL');
+    res.status(500).send(`Error fetching video URL: ${error.message}`);
   }
 });
 
