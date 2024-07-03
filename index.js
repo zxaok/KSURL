@@ -17,14 +17,18 @@ async function fetchVideoUrl() {
     });
 
     const dom = new JSDOM(response.data);
-    const scriptContent = dom.window.document.querySelector('script').textContent;
-    const videoUrlMatch = scriptContent.match(/video\s*:\s*'([^']+)'/);
+    const scriptTags = dom.window.document.querySelectorAll('script');
 
-    if (videoUrlMatch && videoUrlMatch[1]) {
-      return videoUrlMatch[1];
-    } else {
-      throw new Error('Video URL not found');
+    for (const script of scriptTags) {
+      const scriptContent = script.textContent;
+      const videoUrlMatch = scriptContent.match(/video\s*:\s*'([^']+)'/);
+
+      if (videoUrlMatch && videoUrlMatch[1]) {
+        return videoUrlMatch[1];
+      }
     }
+
+    throw new Error('Video URL not found');
   } catch (error) {
     console.error('Error fetching video URL:', error.message);
     throw error;
